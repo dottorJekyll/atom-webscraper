@@ -2,6 +2,17 @@
   "name": "atom-scraper",
   "version": "0.0.9",
   "description": "A webscraper to export atom feed",
+  "scripts": {
+    "lint": "eslint src/**",
+    "test": "npm run clean && NODE_ENV=test \"./node_modules/.bin/mocha\" --timeout 5000 --require @babel/register \"./{,!(node_modules)/**/}*.spec.js\"",
+    "start": "npm run prod",
+    "build": "npm run clean && npm run babel",
+    "run": "npm run build && node ./dist/app.js",
+    "dev": "NODE_ENV=development npm-run-all build run",
+    "prod": "NODE_ENV=production npm-run-all build run",
+    "babel": "babel lib/ --out-dir dist --source-maps",
+    "clean": "rimraf dist"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/dottorJekyll/atom-scraper.git"
@@ -15,7 +26,10 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "feed": "^4.1.0",
-    "got": "^10.6.0"
+    "got": "^10.6.0",
+    "js-yaml": "^3.13.1",
+    "yargs": "^15.3.0",
+    "regenerator-runtime": "^0.13.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
