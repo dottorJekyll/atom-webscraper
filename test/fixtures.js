@@ -10,3 +10,21 @@ exports.article_list = `
         </div>
     </body>
 `;
+
+exports.category = `
+    <body id="category">
+
+    </body>
+`;
+
+exports.author = `
+    <body id="author">
+
+    </body>
+`;
+
+exports.item = `
+    <body id="item">
+
+    </body>
+`;
