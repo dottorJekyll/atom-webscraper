@@ -3,7 +3,8 @@ FROM node:12.16.1-alpine3.11
 ENV CONFIG_PATH=/config
 ENV DATA_PATH=/data
 
-RUN apk update && apk add bash
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 RUN mkdir -p /app/node_modules && chown -R node:node /app
 
@@ -17,4 +18,4 @@ RUN npm install --production
 
 COPY --chown=node:node ./dist .
 
-ENTRYPOINT ["node", "dist/app.js"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
