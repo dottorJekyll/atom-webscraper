@@ -12,6 +12,7 @@ import ItemBuilder from '../../lib/builder/itemBuilder';
 import CategoryBuilder from '../../lib/builder/categoryBuilder';
 import AuthorBuilder from '../../lib/builder/authorBuilder';
 import Builder from '../../lib/builder/index';
+import console from '../../lib/consoleColors';
 
 describe('Builder', () => {
   let sandbox;
@@ -95,8 +96,11 @@ describe('Builder', () => {
     const config = {};
     const tagType = 'unknown';
 
+    sandbox.spy(console, 'error');
+
     Builder.build(config, el, tagType);
 
+    expect(console.error.called).to.be.true;
     expect(ItemBuilder.build.notCalled).to.be.true;
     expect(CategoryBuilder.build.notCalled).to.be.true;
     expect(AuthorBuilder.build.notCalled).to.be.true;
