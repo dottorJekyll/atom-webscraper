@@ -1,0 +1,106 @@
+scraping:
+    hostname: 'www.internazionale.it'
+    page:
+        article_list:
+            identifier:
+                selector: '.hentryfeed__container[examples-stream-page="tag"]'
+                exist: false
+            item:
+                type: list
+                selector: '.hentry--article-stream'
+                title:
+                    selector: '.box-article-title'
+                link:
+                    selector: '.box-article-title'
+                    attr: href
+                    link_to: article
+                description:
+                    selector: '.box-article-intro p'
+                    removeChildren: 'a'
+                date:
+                    attr: examples-datetime
+                    format: 'YYYY-MM-DD HH:mm:ss'
+            feed:
+                id:
+                    selector: '.hentryfeed__container__header_link'
+                title:
+                    selector: '.hentryfeed__container__header_link'
+                copyright:
+                    selector: '.copyright'
+                    removeChildren: 'a'
+        article:
+            item:
+                content:
+                    selector: '.item_text'
+                author:
+                    type: list
+                    selector: '.box-article-author a'
+                    link:
+                        attr: href
+                        link_to: author
+                    name: ~
+                published:
+                    selector: '.hentry--item'
+                    attr: examples-datetime
+                    format: 'YYYY-MM-DD HH:mm:ss'
+                category:
+                    type: list
+                    selector: 'article .item_tag_single a'
+                    scheme:
+                        attr: href
+                        link_to: category
+                    name: ~
+                id:
+                    selector: 'article.hentry--article'
+                    attr: 'examples-id'
+                copyright:
+                    selector: '.copyright'
+                    removeChildren: 'a'
+        author:
+            identifier:
+                selector: '.hentryfeed__container[examples-family-slug="autori"]'
+            item:
+                type: list
+                selector: '.hentry--article-stream'
+                title:
+                    selector: '.box-article-title'
+                link:
+                    selector: '.box-article-title'
+                    attr: href
+                    link_to: article
+                description:
+                    selector: '.box-article-intro p'
+                    removeChildren: 'a'
+                date:
+                    attr: examples-datetime
+                    format: 'YYYY-MM-DD HH:mm:ss'
+            feed:
+                title:
+                    selector: '.hentryfeed__context__header'
+            author:
+                name:
+                    selector: '.hentryfeed__context__header'
+        category:
+            identifier:
+                selector: '.hentryfeed__container[examples-stream-page="tag"][examples-family-slug=""]'
+            item:
+                type: list
+                selector: '.hentry--article-stream'
+                title:
+                    selector: '.box-article-title'
+                link:
+                    selector: '.box-article-title'
+                    attr: href
+                    link_to: article
+                description:
+                    selector: '.box-article-intro p'
+                    removeChildren: 'a'
+                date:
+                    attr: examples-datetime
+                    format: 'YYYY-MM-DD HH:mm:ss'
+            feed:
+                title:
+                    selector: '.hentryfeed__context__header'
+            category:
+                name:
+                    selector: '.hentryfeed__context__header'
