@@ -1,0 +1,55 @@
+scraping:
+    hostname: 'www.ilpost.it'
+    page:
+        article_list:
+            identifier:
+                selector: 'body.single-post, body.category'
+                exist: false
+            item:
+                type: list
+                selector: '.lanci , article .entry-header'
+                link:
+                    selector: 'figure a'
+                    attr: href
+                    link_to: article
+            feed:
+                title:
+                    value: 'Home'
+        article:
+            item:
+                title:
+                    selector: '.entry-title'
+                description:
+                    selector: '.sottit h2'
+                content:
+                    selector: '#singleBody p'
+                published:
+                    selector: 'meta[property="article:modified_time"]'
+                    attr: content
+                    format: 'YYYY-MM-DDTHH:mm:ss.ss'
+                date:
+                    selector: 'meta[property="article:published_time"]'
+                    attr: content
+                    format: 'YYYY-MM-DDTHH:mm:ss.ss'
+                category:
+                    type: list
+                    selector: '.art_tag a'
+                    scheme:
+                        attr: href
+                    name: ~
+                id:
+                    selector: 'article.hentry--article'
+                    attr: 'examples-id'
+        category:
+            identifier:
+                selector: 'body.category'
+            item:
+                type: list
+                selector: '.lanci , article .entry-header'
+                link:
+                    selector: 'figure a'
+                    attr: href
+                    link_to: article
+            feed:
+                title:
+                    selector: '.archive-title span'
