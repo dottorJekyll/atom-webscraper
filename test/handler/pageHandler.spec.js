@@ -1,7 +1,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import sinon from 'sinon';
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 import cheerio from 'cheerio';
 import {
   afterEach, beforeEach, describe, it,
@@ -27,7 +27,40 @@ describe('PageHandler', () => {
     sandbox.restore();
   });
 
-  it('Article List should have items', () => {
+  it('PageHandler should supports article_list', () => {
+    const pageFixture = fixtures.article_list;
+    const pageConfig = {
+      identifier: {
+        selector: '#article_list',
+      },
+    };
+
+    const pageNode = Node.Create(pageConfig);
+    const el = cheerio.load(pageFixture)
+      .root();
+    const supports = PageHandler.supports(pageNode, el);
+
+    expect(supports).to.be.true;
+  });
+
+  it('PageHandler should not supports article_list', () => {
+    const pageFixture = fixtures.article_list;
+    const pageConfig = {
+      identifier: {
+        selector: '#article_list',
+        exist: false,
+      },
+    };
+
+    const pageNode = Node.Create(pageConfig);
+    const el = cheerio.load(pageFixture)
+      .root();
+    const supports = PageHandler.supports(pageNode, el);
+
+    expect(supports).to.be.false;
+  });
+
+  it('Article List should have items', async () => {
     const pageFixture = fixtures.article_list;
     const pageConfig = {
       item: {
@@ -44,12 +77,33 @@ describe('PageHandler', () => {
     const pageNode = Node.Create(pageConfig);
     const el = cheerio.load(pageFixture)
       .root();
-    PageHandler.handle(pageNode, el, 'feed');
+    await PageHandler.handle(pageNode, el, 'feed');
 
     assert.ok(ListHandler.handle.called);
   });
 
-  it('tagType not in pageConfig', () => {
+  it('Article List without list type', async () => {
+    const pageFixture = fixtures.article_list;
+    const pageConfig = {
+      item: {
+        selector: '.items',
+        link: {
+          selector: 'a',
+          attr: 'href',
+        },
+      },
+      feed: {},
+    };
+
+    const pageNode = Node.Create(pageConfig);
+    const el = cheerio.load(pageFixture)
+      .root();
+    await PageHandler.handle(pageNode, el, 'feed');
+
+    assert.ok(ListHandler.handle.notCalled);
+  });
+
+  it('tagType not in pageConfig', async () => {
     const pageFixture = fixtures.article_list;
     const pageConfig = {
       abc: {},
@@ -58,7 +112,7 @@ describe('PageHandler', () => {
     const pageNode = Node.Create(pageConfig);
     const el = cheerio.load(pageFixture)
       .root();
-    const supported = PageHandler.handle(pageNode, el, 'ef');
+    const supported = await PageHandler.handle(pageNode, el, 'ef');
 
     assert.isFalse(supported);
   });
